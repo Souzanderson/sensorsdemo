@@ -140,6 +140,45 @@ def microswitch():
     else:
         return jsonify({"error": 'Método não implementado!'})
     
-#Rotina principal de execução do WS    
+
+@app.route("/cooler", methods=['GET','POST']) 
+@cross_origin(origin='*',headers=['Content- Type','Authorization'])
+def cooler(): 
+    #recupera itens de json enviados por post
+    body = request.get_json()
+    #recupera a key hascode enviada por get
+    hascode = request.args.get('hascode')
+    
+    # Verificação se o usuário está logado
+    if(not Validator().checkHash(hascode)):
+        return jsonify({"error": "Usuário sem permissão de acesso!"})
+    
+    # Implementação do método GET
+    if request.method == 'GET':
+        try:
+            db = MySql()
+            query = db.select('cooler')
+            return jsonify(query)
+        except:
+            jsonify({"error": "Erro de requisição!"})
+            
+    # Implementação do método POST
+    elif request.method == 'POST':
+        try:
+            db = MySql()
+            body['dtupdate'] = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            id = db.insert('cooler', body)
+            query = db.select('cooler', where='id="%s"' % str(id), first= True)
+            return jsonify(query)
+        except:
+            return jsonify({"error": "Erro de requisição!"})
+    else:
+        return jsonify({"error": 'Método não implementado!'})
+ 
+
+
+
+# 
+# Rotina principal de execução do WS    
 if __name__ == '__main__':
     app.run()

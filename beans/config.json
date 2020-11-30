@@ -1,7 +1,7 @@
 {
-    "host": "center.cphggvxo7yic.us-east-2.rds.amazonaws.com",
+    "host": "dbcalc.cfmht99spyri.us-east-2.rds.amazonaws.com",
     "port": "3306",
     "user": "admin",
-    "passwd": "753862mau",
+    "passwd": "matheus789",
     "database": "sensors_demo"
 }
