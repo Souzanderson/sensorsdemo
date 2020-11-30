@@ -16,6 +16,39 @@ cors = CORS(app, resources={r"/": {"origins": "*"}})
 def home(): 
     return "API - V.1.0.0 "
 
+@app.route("/users", methods=['POST']) 
+@cross_origin(origin='http://localhost:4200',headers=['Content- Type','Authorization'])
+def users(): 
+    #recupera itens de json enviados por post
+    body = request.get_json()
+    #recupera a key hascode enviada por get
+    hascode = request.args.get('hascode')
+
+    # Implementação do método GET
+    if request.method == 'GET':
+        try:
+            # Verificação se o usuário está logado
+            if(not Validator().checkHash(hascode)):
+                return jsonify({"error": "Usuário sem permissão de acesso!"})
+            db = MySql()
+            query = db.select('users')
+            return jsonify(query)
+        except:
+            jsonify({"error": "Erro de requisição!"})
+            
+    # Implementação do método POST
+    elif request.method == 'POST':
+        try:
+            db = MySql()
+            body['dtupdate'] = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            id = db.insert('users', body)
+            query = db.select('users', where='id="%s"' % str(id), first= True)
+            return jsonify(query)
+        except:
+            return jsonify({"error": "Erro de requisição!"})
+    else:
+        return jsonify({"error": 'Método não implementado!'})
+
 @app.route("/login", methods=['POST']) 
 @cross_origin(origin='http://localhost:4200',headers=['Content- Type','Authorization'])
 def login(): 

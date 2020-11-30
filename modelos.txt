@@ -1,0 +1,52 @@
+endpoint: https://sensorsyudi.herokuapp.com/
+hascode: sensorhascode007
+subrotas:
+
+    "acionamentomotor": 
+    {
+        "idmotor": "varchar(45)",
+        "isligado": "varchar(1)",
+        "sentido": "varchar(1)",
+        "velociment": "int"
+    },
+    "cooler": 
+    {
+        "idcooler": "varchar(45)",
+        "isligado": "varchar(1)"
+    },
+    "input_a": 
+    {
+        "idsensor": "varchar(45)",
+        "value": "double(18,9)"
+    },
+    "input_b": 
+    {
+        "idsensor": "varchar(45)",
+        "value": "double(18,9)"
+    },
+    "level": {
+        "idlevel": "varchar(45)",
+        "qtlevel": "double(18,9)"
+    },
+    "microswitch": {
+        "idlimits": "varchar(45)",
+        "action": "varchar(45)"
+    },
+    "motor": {
+        "idmotor": "varchar(45)",
+        "velocity": "double(18,9)",
+        "direction": "double(18,9)"
+    },
+    "output_a": {
+        "idsensor": "varchar(45)",
+        "value": "double(18,9)"
+    },
+    "temperature": {
+        "idsensor": "varchar(45)",
+        "temperatura": "double(18,9)"
+    },
+    "users": {
+        "hascode": "longtext",
+        "name": "longtext",
+        "email": "longtext"
+    }

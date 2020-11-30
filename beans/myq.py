@@ -156,4 +156,21 @@ class MySql():
             print(e)
             return False
 
-
+    def jsonExample(self):
+        try:
+            tables = self.sendSql('show tables')
+            arr = {}
+            for t in tables:
+                values = self.sendSql('describe %s' % t['Tables_in_sensors_demo'])
+                dc = {}
+                for item in values:
+                    try:
+                        if item['Field']!= "id" and item['Field']!= 'dtupdate':
+                            dc[item['Field']]= item['Type'].decode('utf-8')
+                    except:
+                        dc[item['Field']]= str(item['Type'])[2:len(item['Type'])-1]
+                arr[t['Tables_in_sensors_demo']] = dc
+            return json.dumps(arr, indent=4)
+        except Exception as e:
+            print(e)
+            return False
