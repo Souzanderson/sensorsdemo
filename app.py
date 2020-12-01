@@ -41,6 +41,8 @@ def users():
         try:
             db = MySql()
             body['dtupdate'] = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            body['hascode'] = Validator().getHascode(body['login'], body['senha'])
+            del body['senha']
             id = db.insert('users', body)
             query = db.select('users', where='id="%s"' % str(id), first= True)
             return jsonify(query)

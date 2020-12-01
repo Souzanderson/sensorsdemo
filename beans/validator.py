@@ -25,3 +25,13 @@ class Validator:
         except Exception as e:
             print(e)
             return None 
+    
+    def getHascode(self, login, senha):
+        try:
+            hascode = hashlib.sha1(str(login+senha).encode()).hexdigest()
+            if(bool(hascode)):
+                return hascode
+            return None
+        except Exception as e:
+            print(e)
+            return None 
