@@ -31,7 +31,7 @@ def users():
             if(not Validator().checkHash(hascode)):
                 return jsonify({"error": "Usuário sem permissão de acesso!"})
             db = MySql()
-            query = db.select('users')
+            query = db.select('users', orderby="id desc")
             return jsonify(query)
         except:
             jsonify({"error": "Erro de requisição!"})
@@ -85,7 +85,7 @@ def temperature():
     if request.method == 'GET':
         try:
             db = MySql()
-            query = db.select('temperature')
+            query = db.select('temperature', orderby="id desc")
             return jsonify(query)
         except:
             jsonify({"error": "Erro de requisição!"})
@@ -119,7 +119,7 @@ def motor():
     if request.method == 'GET':
         try:
             db = MySql()
-            query = db.select('motor')
+            query = db.select('motor', orderby="id desc")
             return jsonify(query)
         except:
             jsonify({"error": "Erro de requisição!"})
@@ -153,7 +153,7 @@ def microswitch():
     if request.method == 'GET':
         try:
             db = MySql()
-            query = db.select('microswitch')
+            query = db.select('microswitch', orderby="id desc")
             return jsonify(query)
         except:
             jsonify({"error": "Erro de requisição!"})
@@ -187,7 +187,7 @@ def cooler():
     if request.method == 'GET':
         try:
             db = MySql()
-            query = db.select('cooler')
+            query = db.select('cooler', orderby="id desc")
             return jsonify(query)
         except:
             jsonify({"error": "Erro de requisição!"})
@@ -221,7 +221,7 @@ def level():
     if request.method == 'GET':
         try:
             db = MySql()
-            query = db.select('level')
+            query = db.select('level', orderby="id desc")
             return jsonify(query)
         except:
             jsonify({"error": "Erro de requisição!"})
@@ -255,7 +255,7 @@ def input_a():
     if request.method == 'GET':
         try:
             db = MySql()
-            query = db.select('input_a')
+            query = db.select('input_a', orderby="id desc")
             return jsonify(query)
         except:
             jsonify({"error": "Erro de requisição!"})
@@ -289,7 +289,7 @@ def input_b():
     if request.method == 'GET':
         try:
             db = MySql()
-            query = db.select('input_b')
+            query = db.select('input_b', orderby="id desc")
             return jsonify(query)
         except:
             jsonify({"error": "Erro de requisição!"})
@@ -323,7 +323,7 @@ def output_a():
     if request.method == 'GET':
         try:
             db = MySql()
-            query = db.select('output_a')
+            query = db.select('output_a', orderby="id desc")
             return jsonify(query)
         except:
             jsonify({"error": "Erro de requisição!"})
@@ -348,6 +348,7 @@ def acionamentomotor():
     body = request.get_json()
     #recupera a key hascode enviada por get
     hascode = request.args.get('hascode')
+    motor = request.args.get('motor')
     
     # Verificação se o usuário está logado
     if(not Validator().checkHash(hascode)):
@@ -357,7 +358,10 @@ def acionamentomotor():
     if request.method == 'GET':
         try:
             db = MySql()
-            query = db.select('acionamento_motor')
+            if bool(motor):
+                query = db.select('acionamento_motor', where='idmotor="%s"' % motor)
+            else:
+                query = db.select('acionamento_motor')
             return jsonify(query)
         except:
             jsonify({"error": "Erro de requisição!"})
@@ -375,7 +379,6 @@ def acionamentomotor():
     else:
         return jsonify({"error": 'Método não implementado!'})
   
-
 # Rotina principal de execução do WS    
 if __name__ == '__main__':
     app.run()
